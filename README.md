@@ -1,8 +1,22 @@
 # ErrorAnalysis and AdversarialValidation
 
+Model development, cross-validation, feature generation and selection, and hyperparameter optimization are all important, of course. But it's all just the first step in modeling. As one of the founders of OpenAI said,
+
+Certainly, coming up with new ideas is important, but even more important, to understand the results.
+
+Ilya Sutskever, Co-founder and Chief Scientist of OpenAI
+Understanding and analyzing errors is the key to improving the quality of ML service. Even the most advanced models are imperfect, they work better on some data and worse on others (and on some they are completely bad). By figuring out how the current model behaves in each case, "which way" it is wrong, we get a clue what new features we need, what transformations of the target variable, possibly new loesses, or what kind of data we need more of.
+
+
 When we count a metric on crossvalidation, we aggregate the errors from all the deferred sample objects into a single number, the metric. For example, we count MSE, MAE, MAPE, or, in classification, LogLoss. A point aggregated metric does not give an understanding of how the error is distributed over different objects, what its distribution is, especially what needs to be changed in the collected ML system to correct the error. The metric can only give a hint that things are bad or good, but it does not tell you what it is because of.
 
 Error analysis is the exact opposite process: we take an aggregated metric and break it down into its components. This gives us an indication of where the system is doing well or poorly.
+
+To train neural networks, we use the back-propagation algorithm, back-propagation. The essence of this algorithm is that we take the error gradient layer by layer (from the most recent to the very first). So, error analysis is exactly the same taking a gradient from the target metric, but only for the whole ML system.
+
+![Alt text](image.png)
+
+
 
 ## Residuals
 
@@ -21,7 +35,7 @@ Than (ylog(p)+(1-y)log(1-p)) represent pseudo-residuals.
 ### Stat tests
 To assess the presence or absence of bias, we compare it to zero using a one-sample t-test.
 Verify the normality of the distribution using the Shapiro-Wilk criterion.
-There are several tests for homoscedasticity: Bartlett's test, Levene's test, Fligner-Killeen's test 
+There are several tests for homoscedasticity: Bartlett's test, Levene's test, Fligner-Killeen's test
 
 ![image](https://github.com/apovalov/ErrorAnalysis_AdversarialValidation/assets/43651275/4ecc15a0-49cb-4fca-a3a7-6da8d7a54311)
 
@@ -43,7 +57,7 @@ As we can see from the idealized example above, the same metric improvement can 
 
 To avoid this, we must look not only at whether the metric has risen or fallen, but also at how it is spread across all objects (e.g., across all users or across all products). To do this, we introduce the concept of Fairness.
 
-1. Residuals 
+1. Residuals
 2. Residuals desrubution (hetero.., normal, unbias)
 3. Fairness of destribution
 4. Use a machine learning model to analyze a machine learning model by learning an advanced adversarial validation technique in the context of residual analysis.
@@ -59,7 +73,7 @@ If best/worst case analysis aims to understand which patterns are in the top bas
 
 # Adversarial Validation
 
-Why do models perform well on the training dataset but poorly on the lagged sample (test dataset, target variables to be predicted for). 
+Why do models perform well on the training dataset but poorly on the lagged sample (test dataset, target variables to be predicted for).
 
 The first possible reason: models can overtrain on the training dataset (especially if we don't provide reliable validation, based on which we don't just look at whether the metric has increased or not, but also take into account the sensitivity of the chosen scheme; we learned this in KAGGLE: A/B-TEST, where we used statistical tests to decide whether the model improvement was significant or within the margin of error).
 
@@ -75,3 +89,12 @@ If there is no big difference between the samples (e.g., ROC-AUC ≈ 0.5), then 
 If there is a large difference between the samples (e.g., ROC-AUC > 0.6), then the samples are already distinguishable, we can select the most similar objects to the test from the training sample and use them as a delayed validation sample.
 
 This is what is called Adversarial Validation.
+
+
+1. Residuals
+2. Residuals destribution & visualization (normal distrib? )
+3. Stat test for bias & norm.distrib evaluation
+4. Diagnostic plots
+5. Scedacity
+6. Residual Fairness
+7. Best/Worse-case Analysis & Corner Case Analysis
